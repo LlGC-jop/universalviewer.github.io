@@ -4,9 +4,9 @@ description: "A test blog post taken from an old BL blog"
 date: 2026-02-17
 language: "en"
 author: "Universal Viewer Steering Group"
-thumb: "./images/zoom.png"
+thumb: "../images/zoom.png"
 thumbAlt: "A screenshot of a UV community sprint zoom call"
-cover: "./images/zoom.png"
+cover: "../images/zoom.png"
 coverAlt: "A screenshot of a UV community sprint zoom call"
 ---
 

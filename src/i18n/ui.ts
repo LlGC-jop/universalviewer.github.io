@@ -6,3 +6,10 @@ export const ui = { en, cy } as const;
 
 export type Lang = keyof typeof ui;
 export type TranslationKey = keyof typeof ui[typeof defaultLang];
+
+export const i18nGetStaticPaths = () => {
+    return [
+        { params: { locale: undefined } }, // English
+        { params: { locale: "cy" } },
+    ];
+}

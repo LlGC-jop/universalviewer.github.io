@@ -48,4 +48,6 @@ export default {
     'footer.roadmap': 'Map Trywydd a Strategaethau',
     'footer.connect': 'Cysylltu',
     'footer.copyright': 'Hawlfraint',
+
+    'test.title': 'Prawf',
 }

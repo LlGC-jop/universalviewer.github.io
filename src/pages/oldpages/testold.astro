@@ -1,0 +1,19 @@
+---
+import type { Lang } from "@i18n/ui";
+import { useTranslations } from "@i18n/utils";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const locale = Astro.currentLocale as Lang;
+
+const t = useTranslations(locale);
+const pageTitle = t("test.title");
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="container">
+    <header class="page-heading">
+      <h1>{t("test.title")}</h1>
+      <p>Content coming soon</p>
+    </header>
+  </div>
+</BaseLayout>

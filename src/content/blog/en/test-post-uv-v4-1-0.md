@@ -4,7 +4,7 @@ description: "Another test blog post taken from an old BL blog"
 date: 2026-02-16
 language: "en"
 author: "Universal Viewer Steering Group"
-cover: ./images/uv.png
+cover: ../images/uv.png
 coverAlt: "A screenshot of Universal Viewer v4.1.0"
 ---
 
@@ -20,7 +20,7 @@ Accessibility Improvements:
 - Better support for assistive technologies such as screen readers.
 - Improved contrast and visibility of page elements.
 
-![A screenshot of Universal Viewer v4.1.0](./images/uv.png)
+![A screenshot of Universal Viewer v4.1.0](../images/uv.png)
 
 New Features:
 

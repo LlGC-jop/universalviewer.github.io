@@ -1,30 +1,36 @@
-import { blogCollectionLocales, siteConfig } from '@config/site';
+import { siteConfig } from '@config/site';
+import type { Lang } from "@i18n/ui";
 import { getCollection, type CollectionEntry, type DataEntryMap } from 'astro:content';
 
 export async function getBlogPosts({ locale, sort }: { locale?: string; sort?: boolean } = {}) {
-  const defaultPosts = await getCollection(blogCollectionLocales['en']);
 
-  const postsMap = new Map();
+  console.log(`Running getBlogPosts for ${locale}`);
 
-  for (const post of defaultPosts) {
-    postsMap.set(post.id, post);
-  }
+  const allPosts = await getCollection('blog');
 
-  if (locale) {
-    const localePosts = await getCollection(blogCollectionLocales[locale]);
+  return allPosts;
 
-    for (const post of localePosts) {
-      postsMap.set(post.id, post);
-    }
-  }
+  // const postsMap = new Map();
 
-  const posts = Array.from(postsMap.values());
+  // for (const post of defaultPosts) {
+  //   postsMap.set(post.id, post);
+  // }
 
-  if (sort) {
-    posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  }
+  // if (locale) {
+  //   const localePosts = await getCollection(blogCollectionLocales[locale]);
 
-  return posts;
+  //   for (const post of localePosts) {
+  //     postsMap.set(post.id, post);
+  //   }
+  // }
+
+  // const posts = Array.from(postsMap.values());
+
+  // if (sort) {
+  //   posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  // }
+
+  // return posts;
 }
 
 export function mapBlogPosts(posts: Array<CollectionEntry<'blog'>>) {

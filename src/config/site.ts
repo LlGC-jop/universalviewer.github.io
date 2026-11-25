@@ -7,7 +7,7 @@ export const siteConfig = {
   },
 };
 
-export const blogCollectionLocales: Record<string, CollectionKey> = {
-  en: 'blog',
-  cy: 'blogCy',
-} as const;
+// export const blogCollectionLocales: Record<string, CollectionKey> = {
+//   en: 'blog',
+//   cy: 'blogCy',
+// } as const;

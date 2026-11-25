@@ -4,7 +4,7 @@ description: "To better understand what you do and what information you need fro
 date: 2026-11-16
 language: "en"
 author: "Stacey Redick"
-thumb: ../blog/images/user-research/user-research-1.png
+thumb: ../images/user-research/user-research-1.png
 thumbAlt: ""
 ---
 
@@ -55,14 +55,14 @@ We initially developed them along the lines of the original audience groups we c
 
 **Here’s what we came up with:**
 
-![](./images/user-research/user-research-1.png)
+![](../images/user-research/user-research-1.png)
 
-![](./images/user-research/user-research-2.png)
+![](../images/user-research/user-research-2.png)
 
-![](./images/user-research/user-research-3.png)
+![](../images/user-research/user-research-3.png)
 
-![](./images/user-research/user-research-4.png)
+![](../images/user-research/user-research-4.png)
 
-![](./images/user-research/user-research-5.png)
+![](../images/user-research/user-research-5.png)
 
 We hope you see yourself in one of these personas, and if you don’t – we look forward to hearing from you about your own experiences. We plan to continue to conduct user research to keep our community sprints and the UV working for you.

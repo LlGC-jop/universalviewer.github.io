@@ -1,0 +1,9 @@
+---
+import { i18nGetStaticPaths } from "@i18n/ui";
+
+export const getStaticPaths = i18nGetStaticPaths;
+
+const locale = Astro.currentLocale ?? "en";
+---
+
+<h1>Test {locale}</h1>

@@ -48,4 +48,6 @@ export default {
     'footer.roadmap': 'Roadmap & Strategies',
     'footer.connect': 'Connect',
     'footer.copyright': 'Copyright',
+
+    'test.title': 'test',
 }
