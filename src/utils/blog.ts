@@ -6,7 +6,9 @@ export async function getBlogPosts({ locale, sort }: { locale?: string; sort?: b
 
   console.log(`Running getBlogPosts for ${locale}`);
 
-  const allPosts = await getCollection('blog');
+  const allPosts = (await getCollection('blog')).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
 
   return allPosts;
 
@@ -50,4 +52,12 @@ export function mapBlogPosts(posts: Array<CollectionEntry<'blog'>>) {
       props: { post },
     };
   });
+}
+
+export function getPostLocale(id: string) {
+  return id.split("/")[0];
+}
+
+export function getPostSlug(id: string) {
+  return id.split("/").slice(1).join("/");
 }

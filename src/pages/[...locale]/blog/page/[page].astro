@@ -11,9 +11,31 @@ const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
 
 // paginate:any is just to stop TS error which isn't a real error in Astro
-export async function getStaticPaths({ paginate }: { paginate: any }) {
-  const posts = await getBlogPosts({ sort: true });
-  return paginate(posts, { pageSize: siteConfig.blog.postsPerPage });
+// export async function getStaticPaths({ paginate }: { paginate: any }) {
+//   const posts = await getBlogPosts({ sort: true });
+//   return paginate(posts, { pageSize: siteConfig.blog.postsPerPage });
+// }
+
+const locales = ["en", "cy", "fr", "se", "pl", "de"];
+export async function getStaticPaths() {
+  const paths = [];
+
+  for (const locale of locales) {
+    const posts = await getBlogPosts(locale);
+
+    const pageCount = Math.ceil(posts.length / siteConfig.blog.postsPerPage);
+
+    for (let page = 1; page <= pageCount; page++) {
+      paths.push({
+        params: {
+          locale,
+          page: page.toString(),
+        },
+      });
+    }
+  }
+
+  return paths;
 }
 
 // manually defined so vscode doesn't show errors

@@ -5,20 +5,22 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import { Image } from "astro:assets";
 import type { Lang } from "@i18n/ui";
 import { getLocaleISOString } from "@i18n/utils";
+import { getPostSlug } from "../utils/blog";
 
 const locale = Astro.currentLocale as Lang;
 
 interface Props {
-  post: CollectionEntry<"blog" | "blogCy">;
+  post: CollectionEntry<"blog">;
 }
 
 const { post } = Astro.props;
 
-function postUrl(post: CollectionEntry<"blog" | "blogCy">) {
+function postUrl(post: CollectionEntry<"blog">) {
   const d = new Date(post.data.date);
+  const slug = getPostSlug(post.id);
   return getRelativeLocaleUrl(
     locale,
-    `/blog/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}/${post.id}`
+    `/blog/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}/${slug}`
   );
 }
 

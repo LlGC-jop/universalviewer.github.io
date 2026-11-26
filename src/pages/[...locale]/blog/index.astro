@@ -8,6 +8,8 @@ import { siteConfig } from "@config/site";
 import { getBlogPosts } from "@utils/blog";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import BlogPostItem from "@components/BlogPostItem.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 export const getStaticPaths = i18nGetStaticPaths;
 
@@ -15,18 +17,42 @@ const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
 const blogPageTwoUrl = getRelativeLocaleUrl(locale, "/blog/page/2");
 
-const posts = await getBlogPosts({ locale: locale, sort: true });
+const locales = ["en", "cy", "fr", "se", "pl", "de"];
+const defaultLocale = "en";
 
-const pageTitle = "Blog";
-const morePages = Math.ceil(posts.length / siteConfig.blog.postsPerPage) > 1;
-const postsToShow = posts.slice(0, siteConfig.blog.postsPerPage);
+// get all posts, sorted by date
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+// group them by their filename (strip the locale part)
+const grouped = Object.groupBy(posts, (post) =>
+  post.id.split("/").slice(1).join("/")
+);
+
+// prefer a locale specific post over the 'default' english one
+const localizedPosts = Object.values(grouped)
+  .map((variants) => {
+    if (!variants) return null;
+
+    return (
+      variants.find((post) => post.id.startsWith(`${locale}/`)) ??
+      variants.find((post) => post.id.startsWith("en/"))
+    );
+  })
+  .filter((post): post is CollectionEntry<"blog"> => post !== undefined)
+  .filter(Boolean);
+
+const pageTitle = t("blog.heading");
+const morePages =
+  Math.ceil(localizedPosts.length / siteConfig.blog.postsPerPage) > 1;
+const postsToShow = localizedPosts.slice(0, siteConfig.blog.postsPerPage);
 ---
 
-<Debug posts={posts} />
 <BaseLayout pageTitle={pageTitle} mainClass="blog-index-main">
   <div class="container">
     <header class="page-heading">
-      <h1>{t("blog.heading")}</h1>
+      <h1>{pageTitle}</h1>
     </header>
   </div>
 

@@ -2,13 +2,12 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import BlogLayout from "@layouts/BlogLayout.astro";
-import { siteConfig, blogCollectionLocales } from "@config/site";
+import { siteConfig } from "@config/site";
 import { getBlogPosts, mapBlogPosts } from "@utils/blog";
 import type { Lang } from "@i18n/ui";
 
 export async function getStaticPaths() {
   const posts = await getBlogPosts();
-  console.log(posts.length, mapBlogPosts(posts));
   return mapBlogPosts(posts);
 }
 
