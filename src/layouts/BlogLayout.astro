@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import type { Lang } from "@i18n/ui";
 import { useTranslations, getLocaleISOString } from "@i18n/utils";
+import { getPostSlug } from "../utils/blog";
 
 interface Props {
   post: any;
@@ -29,7 +30,7 @@ function postUrl(p: any) {
   const d = new Date(p.data.date);
   return getRelativeLocaleUrl(
     locale,
-    `/blog/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}/${p.id}`
+    `/blog/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}/${getPostSlug(p.id)}`
   );
 }
 ---

@@ -1,24 +1,52 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import BlogLayout from "@layouts/BlogLayout.astro";
 import { siteConfig } from "@config/site";
-import { getBlogPosts, mapBlogPosts } from "@utils/blog";
+import { getLocalisedBlogPosts, mapBlogPosts, getPostSlug } from "@utils/blog";
 import type { Lang } from "@i18n/ui";
 
+const locale = Astro.currentLocale as Lang;
+
 export async function getStaticPaths() {
-  const posts = await getBlogPosts();
-  return mapBlogPosts(posts);
+  const paths = [];
+  for (const l of siteConfig.locales) {
+    const localizedPosts = await getLocalisedBlogPosts(l);
+
+    paths.push(
+      ...localizedPosts.map((post) => {
+        const d = new Date(post.data.date);
+        const year = d.getFullYear().toString();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+
+        return {
+          params: {
+            locale: l === siteConfig.defaultLocale ? undefined : l,
+            year,
+            month,
+            day,
+            id: getPostSlug(post.id),
+          },
+          props: { post },
+        };
+      })
+    );
+  }
+
+  console.log(paths);
+
+  return paths;
 }
 
 const { id } = Astro.params;
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-const posts = await getBlogPosts({ sort: true });
+const posts = await getLocalisedBlogPosts(locale);
 
 // 3. Find current post
-const index = posts.findIndex((p) => p.id === id);
+const index = posts.findIndex((p) => getPostSlug(p.id) === id);
 const entry = posts[index];
 if (!entry) throw new Error(`Post not found: ${id}`);
 

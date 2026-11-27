@@ -1,38 +1,48 @@
+import type { Locale } from '@config/site';
 import { siteConfig } from '@config/site';
 import type { Lang } from "@i18n/ui";
 import { getCollection, type CollectionEntry, type DataEntryMap } from 'astro:content';
 
-export async function getBlogPosts({ locale, sort }: { locale?: string; sort?: boolean } = {}) {
+export async function getLocalisedBlogPosts(locale: Locale) {
+  const posts = await getAllBlogPosts();
+  const groupedPosts = groupBlogPosts(posts);
+  const localisedPosts = localiseBlogPosts(locale, groupedPosts);
 
-  console.log(`Running getBlogPosts for ${locale}`);
+  return localisedPosts;
+}
 
-  const allPosts = (await getCollection('blog')).sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+async function getAllBlogPosts() {
+  const posts = (await getCollection("blog")).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
   );
 
-  return allPosts;
+  return posts;
+}
 
-  // const postsMap = new Map();
+function groupBlogPosts(posts: CollectionEntry<"blog">[]) {
+  const grouped = Object.groupBy(posts, (post) =>
+    post.id.split("/").slice(1).join("/")
+  );
 
-  // for (const post of defaultPosts) {
-  //   postsMap.set(post.id, post);
-  // }
+  return grouped;
+}
 
-  // if (locale) {
-  //   const localePosts = await getCollection(blogCollectionLocales[locale]);
+function localiseBlogPosts(locale: Locale, posts: Partial<Record<string, CollectionEntry<"blog">[]>>) {
+  const localisedPosts = Object.values(posts)
+    .map((groupedPosts) => {
+      if (!groupedPosts) return null;
 
-  //   for (const post of localePosts) {
-  //     postsMap.set(post.id, post);
-  //   }
-  // }
+      return (
+        groupedPosts.find((post) => post.id.startsWith(`${locale}/`)) ??
+        groupedPosts.find((post) =>
+          post.id.startsWith(`${siteConfig.defaultLocale}/`)
+        )
+      );
+    })
+    .filter((post): post is CollectionEntry<"blog"> => post !== undefined)
+    .filter(Boolean);
 
-  // const posts = Array.from(postsMap.values());
-
-  // if (sort) {
-  //   posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  // }
-
-  // return posts;
+  return localisedPosts;
 }
 
 export function mapBlogPosts(posts: Array<CollectionEntry<'blog'>>) {

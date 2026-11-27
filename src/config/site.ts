@@ -1,13 +1,9 @@
-
-import type { CollectionKey } from 'astro:content';
-
 export const siteConfig = {
+  locales: ["en", "cy"],
+  defaultLocale: "en",
   blog: {
     postsPerPage: 5,
   },
-};
+} as const;
 
-// export const blogCollectionLocales: Record<string, CollectionKey> = {
-//   en: 'blog',
-//   cy: 'blogCy',
-// } as const;
+export type Locale = (typeof siteConfig.locales)[number];
