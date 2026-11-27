@@ -16,6 +16,15 @@ const t = useTranslations(locale);
 //   return paginate(posts, { pageSize: siteConfig.blog.postsPerPage });
 // }
 
+/**
+ * todo
+ * loop over locales
+ * for each get localised posts
+ * do the maths to work out how many pages
+ * loop over the pages as currently and create a path
+ * remember to make the en path undefined if the current locale, l, in the loop is the default one
+ */
+
 const locales = ["en", "cy", "fr", "se", "pl", "de"];
 export async function getStaticPaths() {
   const paths = [];
